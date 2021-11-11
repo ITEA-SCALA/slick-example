@@ -1,4 +1,4 @@
-import kz.example.model.Book
+import kz.example.domain.Book
 import kz.example.repository.{BooksRepositoryImpl, BooksRepository}
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
