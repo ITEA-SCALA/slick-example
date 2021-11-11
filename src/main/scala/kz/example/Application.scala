@@ -5,12 +5,16 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
 import kz.example.repository.{BooksRepositoryImpl, BooksRepository}
-import kz.example.routers.RestRoutes
+import kz.example.routers.Routes
 import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-
+/*
+ * Здесь создаются и собираются компоненты (бины) приложения:
+ * 1. restRoutes ........ компонент
+ * 2. booksRepository ... компонент
+ */
 object Application extends App {
 
   val config: Config = ConfigFactory.load()
@@ -32,7 +36,7 @@ object Application extends App {
       throw exception
   }
 
-  val restRoutes = new RestRoutes(booksRepository)
+  val restRoutes = new Routes(booksRepository)
 
   val host = config.getString("application.host")
   val port = config.getInt("application.port")

@@ -1,18 +1,18 @@
 package kz.example.actor
 
 import akka.actor.{Actor, ActorLogging}
-import kz.example.routers.PerRequest
+import kz.example.routers.Request
 import kz.example.utils.Serializers
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.duration._
 
 
-trait PerRequestActor
+trait RequestActor
   extends Actor
     with ActorLogging
     with Serializers
-    with PerRequest {
+    with Request {
 
   context.setReceiveTimeout(60 seconds)
 

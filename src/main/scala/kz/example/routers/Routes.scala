@@ -6,8 +6,8 @@ import kz.example.repository.BooksRepository
 import kz.example.utils.Serializers
 
 
-class RestRoutes(booksRepository: BooksRepository)
-                (implicit system: ActorSystem)
+class Routes(booksRepository: BooksRepository)
+            (implicit system: ActorSystem)
   extends Serializers {
 
   private val bookRouter = new BookRoute(booksRepository)

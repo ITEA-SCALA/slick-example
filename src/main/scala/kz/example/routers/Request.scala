@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Promise}
 import scala.util.{Success, Try}
 
 
-trait PerRequest {
+trait Request {
   this: Actor with Serializers =>
 
   implicit def ec: ExecutionContext

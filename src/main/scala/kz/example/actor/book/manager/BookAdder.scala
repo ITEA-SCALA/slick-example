@@ -1,7 +1,7 @@
 package kz.example.actor.book.manager
 
 import akka.http.scaladsl.model.StatusCodes
-import kz.example.actor.PerRequestActor
+import kz.example.actor.RequestActor
 import kz.example.messages.error.ErrorMessages
 import kz.example.repository.BooksRepository
 
@@ -9,7 +9,7 @@ import scala.util.{Failure, Success}
 
 
 trait BookAdder {
-  this: PerRequestActor =>
+  this: RequestActor =>
 
   import kz.example.actor.book.BookManager.AddBook
 

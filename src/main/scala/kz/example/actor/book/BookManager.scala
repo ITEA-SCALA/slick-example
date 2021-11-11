@@ -2,7 +2,7 @@ package kz.example.actor.book
 
 import akka.actor.Props
 import akka.http.scaladsl.server.{RequestContext, RouteResult}
-import kz.example.actor.PerRequestActor
+import kz.example.actor.RequestActor
 import kz.example.actor.book.manager.{BookAdder, BookGetter, BookRemover, BookUpdater}
 import kz.example.domain.Book
 import kz.example.repository.BooksRepository
@@ -30,7 +30,7 @@ object BookManager {
 class BookManager(val booksRepository: BooksRepository,
                   val requestContext: RequestContext,
                   val promise: Promise[RouteResult])
-  extends PerRequestActor
+  extends RequestActor
     with BookAdder
     with BookGetter
     with BookUpdater
