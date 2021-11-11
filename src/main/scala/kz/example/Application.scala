@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
 /*
- * Здесь создаются и собираются компоненты (бины) приложения:
+ * Этот класс - создает и собирает компоненты (бины) приложения:
  * 1. restRoutes ........ компонент
  * 2. booksRepository ... компонент
  * ***
