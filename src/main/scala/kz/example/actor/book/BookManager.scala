@@ -12,10 +12,10 @@ import scala.concurrent.Promise
 
 object BookManager {
 
-  def props(booksRepository: BooksRepository,
+  def props(repository: BooksRepository,
             requestContext: RequestContext,
             promise: Promise[RouteResult]): Props =
-    Props(new BookManager(booksRepository, requestContext, promise))
+    Props(new BookManager(repository, requestContext, promise))
 
   sealed trait BookRequest
 
@@ -27,7 +27,7 @@ object BookManager {
 }
 
 
-class BookManager(val booksRepository: BooksRepository,
+class BookManager(val booksRepository: BooksRepository, // это Get/Set-ер
                   val requestContext: RequestContext,
                   val promise: Promise[RouteResult])
   extends RequestActor

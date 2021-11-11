@@ -13,7 +13,7 @@ import kz.example.utils.Serializers
 import scala.concurrent.Promise
 
 
-class BookRoute(booksRepository: BooksRepository)
+class BookRoute(repository: BooksRepository)
                (implicit system: ActorSystem)
   extends Serializers {
 
@@ -40,7 +40,7 @@ class BookRoute(booksRepository: BooksRepository)
 
   private def handleBook(request: BookManager.BookRequest): Route = ctx => {
     val p = Promise[RouteResult]
-    val target = system.actorOf(BookManager.props(booksRepository, ctx, p))
+    val target = system.actorOf(BookManager.props(repository, ctx, p))
     target ! request
     p.future
   }
