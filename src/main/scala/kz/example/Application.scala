@@ -14,6 +14,11 @@ import scala.util.{Failure, Success}
  * Здесь создаются и собираются компоненты (бины) приложения:
  * 1. restRoutes ........ компонент
  * 2. booksRepository ... компонент
+ * ***
+ *
+ * Клиентский запрос приходит в 'BookRoute' - он выполняет роль контроллера
+ *
+ *
  */
 object Application extends App {
 
