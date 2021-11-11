@@ -1,13 +1,13 @@
 package kz.example.repository
 
 import kz.example.model.Book
-import kz.example.database.table.BooksTable
+//import kz.example.database.table.BooksTable
+import kz.example.repository.table.BooksTable
 import slick.jdbc.PostgresProfile.api._
-
 import scala.concurrent.Future
 
-
-class BooksRepositoryImpl(implicit db: Database)
+//class BooksRepositoryImpl(implicit db: Database)
+class BooksRepositoryImpl()
   extends BooksRepository
     with BooksTable {
 
