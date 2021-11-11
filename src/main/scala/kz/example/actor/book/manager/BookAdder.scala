@@ -11,7 +11,7 @@ import scala.util.{Failure, Success}
 trait BookAdder {
   this: PerRequestActor =>
 
-  import BookManager.AddBook
+  import kz.example.actor.book.BookManager.AddBook
 
   def booksRepository: BooksRepository
 

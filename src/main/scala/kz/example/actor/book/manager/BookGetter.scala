@@ -12,7 +12,7 @@ import scala.util.{Failure, Success}
 trait BookGetter {
   this: PerRequestActor =>
 
-  import BookManager.GetBook
+  import kz.example.actor.book.BookManager.GetBook
 
   def booksRepository: BooksRepository
 

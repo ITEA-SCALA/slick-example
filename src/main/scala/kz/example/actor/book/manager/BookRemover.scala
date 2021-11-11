@@ -12,7 +12,7 @@ import scala.util.{Failure, Success}
 trait BookRemover {
   this: PerRequestActor =>
 
-  import BookManager.DeleteBook
+  import kz.example.actor.book.BookManager.DeleteBook
 
   def booksRepository: BooksRepository
 
