@@ -1,4 +1,4 @@
-package kz.example.routing
+package kz.example.routers
 
 import akka.actor.Actor
 import akka.http.scaladsl.marshalling.ToResponseMarshallable

@@ -1,4 +1,4 @@
-package kz.example.routing
+package kz.example.routers
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.server.Route

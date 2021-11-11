@@ -5,7 +5,7 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
 import kz.example.repository.{BooksRepositoryImpl, BooksRepository}
-import kz.example.routing.RestRoutes
+import kz.example.routers.RestRoutes
 import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}

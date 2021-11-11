@@ -1,7 +1,7 @@
 package kz.example.actor
 
 import akka.actor.{Actor, ActorLogging}
-import kz.example.routing.PerRequest
+import kz.example.routers.PerRequest
 import kz.example.utils.Serializers
 
 import scala.concurrent.ExecutionContextExecutor
