@@ -7,7 +7,7 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.Future
 
 
-class BooksPostgreRepository(db: Database)
+class BooksRepositoryImpl(implicit db: Database)
   extends BooksRepository
     with BooksTable {
 
@@ -42,5 +42,4 @@ class BooksPostgreRepository(db: Database)
       books.schema.createIfNotExists
     )
   }
-
 }

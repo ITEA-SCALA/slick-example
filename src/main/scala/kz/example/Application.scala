@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
-import kz.example.repository.{BooksPostgreRepository, BooksRepository}
+import kz.example.repository.{BooksRepositoryImpl, BooksRepository}
 import kz.example.routing.RestRoutes
 import org.slf4j.LoggerFactory
 import slick.jdbc.PostgresProfile.api._
@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
 
-object Boot extends App {
+object Application extends App {
 
   val config: Config = ConfigFactory.load()
   val actorSystemName = config.getString("akka.system.name")
@@ -21,11 +21,11 @@ object Boot extends App {
   implicit val system: ActorSystem = ActorSystem(actorSystemName)
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val executionContext: ExecutionContext = system.dispatcher
+  implicit val db = Database.forConfig("database.postgre")
 
-  val log = LoggerFactory.getLogger(Boot.getClass)
+  val log = LoggerFactory.getLogger(Application.getClass)
 
-  val db = Database.forConfig("database.postgre")
-  val booksRepository: BooksRepository = new BooksPostgreRepository(db)
+  val booksRepository: BooksRepository = new BooksRepositoryImpl()
 
   booksRepository.prepareRepository().onComplete {
     case Success(_) => log.info("Books repository was successfully prepared")
