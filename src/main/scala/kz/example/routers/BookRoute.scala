@@ -17,7 +17,7 @@ class BookRoute(repository: BooksRepository)
                (implicit system: ActorSystem)
   extends Serializers {
 
-  val route: Route = pathPrefix("books") {
+  val route: Route = pathPrefix("books") {  // TODO:  'api/v1'
     path(IntNumber) { bookId =>
       get {
         handleBook(BookManager.GetBook(bookId))
