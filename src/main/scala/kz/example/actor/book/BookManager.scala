@@ -27,7 +27,7 @@ object BookManager {
 }
 
 
-class BookManager(val booksRepository: BooksRepository, // это Get/Set-ер
+class BookManager(val booksRepository: BooksRepository, // это как Get/Set-ер
                   val requestContext: RequestContext,
                   val promise: Promise[RouteResult])
   extends RequestActor
