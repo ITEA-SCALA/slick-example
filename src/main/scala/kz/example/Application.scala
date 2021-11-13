@@ -47,7 +47,8 @@ object Application extends App {
   val bookRepository = wire[BookRepositoryImpl]
   val bookRoute = wire[BookRoute]
 
-  val routes: Route = pathPrefix("api") {
+//  val routes: Route = pathPrefix("api") {
+  val routes: Route = {
     bookRoute.route
   }
 
