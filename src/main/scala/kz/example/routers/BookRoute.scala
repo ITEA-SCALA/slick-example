@@ -10,7 +10,8 @@ import kz.example.utils.Serializers
 class BookRoute(repository: BookRepository) extends Serializers {
   def route: Route = pathPrefix("books") {
     getBook ~
-    addBook
+    add ~
+    update
   }
 
   /*
@@ -39,10 +40,31 @@ class BookRoute(repository: BookRepository) extends Serializers {
  * ***
  * "1"
  */
-  def addBook: Route = pathEndOrSingleSlash {
+  def add: Route = pathEndOrSingleSlash {
     entity(as[Book]) { book =>
       post {
         onSuccess(repository.add(book)) { result =>
+          complete(s"$result")
+        }
+      }
+    }
+  }
+
+  /*
+   * PUT
+   * http://localhost:8082/books
+   * {
+   *   "id": 17,
+   *   "name": "test update name",
+   *   "author": "test update author"
+   * }
+   * ***
+   * "1"
+   */
+  def update: Route = pathEndOrSingleSlash {
+    entity(as[Book]) { book =>
+      put {
+        onSuccess(repository.update(book)) { result =>
           complete(s"$result")
         }
       }
