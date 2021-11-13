@@ -15,9 +15,9 @@ import com.softwaremill.macwire.wire
 import kz.example.config.{actorSystemName, appConfig}
 import kz.example.config.actorSystemName
 
-import java.time.Duration
+import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.TimeUnit
-import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.concurrent.duration.{Duration, DurationInt, FiniteDuration}
 
 
 object BookApp extends App {
@@ -38,13 +38,20 @@ object BookApp extends App {
   }
 
   val actor = system.actorOf(Props(new MyActor), name = "actor")
-  system.scheduler.schedule(
-    FiniteDuration(50, TimeUnit.MILLISECONDS),
-    FiniteDuration(1500, TimeUnit.MILLISECONDS),
-    actor,
-    Message())
+//  system.scheduler.schedule(
+//    FiniteDuration(50, TimeUnit.MILLISECONDS),
+//    FiniteDuration(1500, TimeUnit.MILLISECONDS),
+//    actor,
+//    Message())
 
+//  system.scheduler.scheduleOnce(
+//    FiniteDuration(1500, TimeUnit.MILLISECONDS),
+//    actor,
+//    Message())
 
+//    system.scheduler.schedule(initialDelay = 10.seconds, interval = 1.minute) {
+//      println(s"[${LocalDateTime.now}] [AkkaSchedulerExample] Executing something ...")
+//    }
 
   val bookRepository = wire[BookRepositoryImpl]
   val bookRoute = wire[BookRoute]
