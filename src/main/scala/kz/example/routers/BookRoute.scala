@@ -11,7 +11,8 @@ class BookRoute(repository: BookRepository) extends Serializers {
   def route: Route = pathPrefix("books") {
     getBook ~
     add ~
-    update
+    update ~
+    deleteBook
   }
 
   /*
@@ -67,6 +68,20 @@ class BookRoute(repository: BookRepository) extends Serializers {
         onSuccess(repository.update(book)) { result =>
           complete(s"$result")
         }
+      }
+    }
+  }
+
+/*
+ * DELETE
+ * http://localhost:8082/books/17
+ * ***
+ * "1"
+ */
+  def deleteBook: Route = path(IntNumber) { bookId =>
+    delete {
+      onSuccess(repository.deleteBook(bookId)) { result =>
+        complete(s"$result")
       }
     }
   }
