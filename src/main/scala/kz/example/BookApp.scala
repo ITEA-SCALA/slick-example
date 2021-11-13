@@ -11,17 +11,14 @@ import kz.example.routers.BookRoute
 import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
 import com.softwaremill.macwire.wire
-import kz.example.config.appConfig
+import kz.example.config.{actorSystemName, appConfig}
 
 
 object BookApp extends App {
 
-  val config: Config = ConfigFactory.load()
-  val actorSystemName = config.getString("akka.system.name")
-
   implicit val system: ActorSystem = ActorSystem(actorSystemName)
   implicit val materializer: ActorMaterializer = ActorMaterializer()
-  implicit val executionContext: ExecutionContext = system.dispatcher
+  implicit val ec: ExecutionContext = system.dispatcher
 
   val log = LoggerFactory.getLogger(BookApp.getClass)
 
