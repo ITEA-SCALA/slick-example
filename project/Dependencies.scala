@@ -10,6 +10,7 @@ object Version {
   val akkaHttpJson4s = "1.25.2"
   val logbackClassic = "1.2.3"
   val scalaTest = "3.0.8-RC4"
+  val macwire = "2.4.1"
 }
 
 
@@ -24,6 +25,7 @@ object Library {
   val akkaHttpJson4s = "de.heikoseeberger" %% "akka-http-json4s" % Version.akkaHttpJson4s
   val logbackClassic = "ch.qos.logback" % "logback-classic" % Version.logbackClassic
   val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest % Test
+  val macwire = "com.softwaremill.macwire" %% "macros" % Version.macwire  % "provided"
 }
 
 
@@ -41,7 +43,8 @@ object Dependencies {
     json4sJackson,
     akkaHttpJson4s,
     logbackClassic,
-    scalaTest
+    scalaTest,
+    macwire
   )
 
 }

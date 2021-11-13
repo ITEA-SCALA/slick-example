@@ -2,13 +2,17 @@ package kz.example
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.server.Directives.pathPrefix
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
-import kz.example.repository.{BooksRepositoryImpl, BooksRepository}
-import kz.example.routers.Routes
+import kz.example.repository.{BooksRepository, BooksRepositoryImpl}
+import kz.example.routers.BookRoute2
+//import kz.example.routers.Routes
 import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
+import com.softwaremill.macwire.wire
 
 /*
  * Этот класс - создает и собирает компоненты (бины) приложения:
@@ -39,21 +43,29 @@ object Application extends App {
 
   val log = LoggerFactory.getLogger(Application.getClass)
 
-  val booksRepository: BooksRepository = new BooksRepositoryImpl()
+//  val booksRepository: BooksRepository = new BooksRepositoryImpl()
+//
+//  booksRepository.prepareRepository().onComplete {
+//    case Success(_) => log.info("Books repository was successfully prepared")
+//
+//    case Failure(exception) =>
+//      log.error("Failed to prepare books repository with exception = {}", exception.toString)
+//      throw exception
+//  }
+//
+//  val restRoutes = new Routes(booksRepository)
 
-  booksRepository.prepareRepository().onComplete {
-    case Success(_) => log.info("Books repository was successfully prepared")
 
-    case Failure(exception) =>
-      log.error("Failed to prepare books repository with exception = {}", exception.toString)
-      throw exception
+  val bookRepository = wire[BooksRepositoryImpl]
+  val bookRoute = wire[BookRoute2]
+
+  val apiRoute: Route = pathPrefix("api") {
+    bookRoute.route
   }
-
-  val restRoutes = new Routes(booksRepository)
 
   val host = config.getString("application.host")
   val port = config.getInt("application.port")
-  Http().bindAndHandle(restRoutes.route, host, port)
+  Http().bindAndHandle(apiRoute, host, port)
 
   log.info("{} ActorSystem started", actorSystemName)
 
