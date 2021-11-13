@@ -1,5 +1,6 @@
 package kz.example.repository
 
+import kz.example.config.db
 import kz.example.domain.Book
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
