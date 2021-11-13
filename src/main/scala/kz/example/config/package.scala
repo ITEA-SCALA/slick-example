@@ -7,10 +7,10 @@ import slick.jdbc.PostgresProfile.api._
 
 package object config {
 
-  private val config: Config = ConfigFactory.load()
-  val actorSystemName = config.getString("akka.system.name")
+  private val config: Config       = ConfigFactory.load()
+  val actorSystemName              = config.getString("akka.system.name")
+  val db                           = Database.forConfig("database.postgre")
   val appConfig: ApplicationConfig = loadConfigOrThrow[ApplicationConfig](config)
-  val db = Database.forConfig("database.postgre")
 
   case class ApplicationConfig(
     schedulerExpression: SchedulerExpressionConfig,
