@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 import com.softwaremill.macwire.wire
 
 
-object Application extends App {
+object BookApp extends App {
 
   val config: Config = ConfigFactory.load()
   val actorSystemName = config.getString("akka.system.name")
@@ -22,7 +22,7 @@ object Application extends App {
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val executionContext: ExecutionContext = system.dispatcher
 
-  val log = LoggerFactory.getLogger(Application.getClass)
+  val log = LoggerFactory.getLogger(BookApp.getClass)
 
 
   val bookRepository = wire[BookRepositoryImpl]

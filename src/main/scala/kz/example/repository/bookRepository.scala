@@ -10,7 +10,7 @@ class BookRepositoryImpl()
   extends BookRepository
     with BookTable {
 
-  override def add(book: Book): Future[Int] = {
+  override def save(book: Book): Future[Int] = {
     db.run(
       books += book
     )
@@ -44,7 +44,7 @@ class BookRepositoryImpl()
 }
 
 trait BookRepository {
-  def add(book: Book): Future[Int]
+  def save(book: Book): Future[Int]
   def update(book: Book): Future[Int]
   def deleteBook(bookId: Int): Future[Int]
   def getBook(bookId: Int): Future[Seq[Book]]

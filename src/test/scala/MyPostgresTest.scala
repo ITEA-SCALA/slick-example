@@ -18,7 +18,7 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
   val bookForInsert = Book(bookId, "Harry Potter and the Prisoner of Azkaban", "J. K. Rowling")
   val bookForUpdate = Book(bookId, "Harry Potter and the Goblet of Fire", "J. K. Rowling")
 
-  def insertBook: Int = booksRepository.add(bookForInsert).futureValue
+  def insertBook: Int = booksRepository.save(bookForInsert).futureValue
   def updateBook: Int = booksRepository.update(bookForUpdate).futureValue
 
   before {
