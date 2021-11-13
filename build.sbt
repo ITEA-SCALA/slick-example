@@ -19,7 +19,8 @@ val akkaHttpJson4sVer = "1.25.2"
 val macwireVer        = "2.4.1"
 val pureConfigVer     = "0.9.0"
 //val pureConfigVer     = "0.17.0"
-val akkaQuartzVer     = "1.7.1-akka-2.5.x"
+//val akkaQuartzVer     = "1.7.1-akka-2.5.x"
+val akkaQuartzVer     = "1.8.5-akka-2.6.x"
 //val akkaQuartzVer     = "1.9.2-akka-2.6.x"
 val logbackClassicVer = "1.2.3"
 val scalaTestVer      = "3.0.8-RC4"
@@ -35,9 +36,9 @@ libraryDependencies ++= Seq(
   "org.json4s"               %% "json4s-jackson"        % json4sVer,
   "de.heikoseeberger"        %% "akka-http-json4s"      % akkaHttpJson4sVer,
   "com.softwaremill.macwire" %% "macros"                % macwireVer         % "provided",
-//  "com.enragedginger"        %% "akka-quartz-scheduler" % akkaQuartzVer,
   "com.github.pureconfig"    %% "pureconfig"            % pureConfigVer,
   "ch.qos.logback"           %  "logback-classic"       % logbackClassicVer,
-  "org.scalatest"            %% "scalatest"             % scalaTestVer       % Test
+  "org.scalatest"            %% "scalatest"             % scalaTestVer       % Test,
+  "com.enragedginger"        %% "akka-quartz-scheduler" % akkaQuartzVer,
 )
 
