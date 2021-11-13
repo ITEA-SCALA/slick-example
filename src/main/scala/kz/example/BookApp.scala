@@ -6,11 +6,12 @@ import akka.http.scaladsl.server.Directives.pathPrefix
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
-import kz.example.repository.{BookRepositoryImpl}
+import kz.example.repository.BookRepositoryImpl
 import kz.example.routers.BookRoute
 import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
 import com.softwaremill.macwire.wire
+import kz.example.config.appConfig
 
 
 object BookApp extends App {
@@ -33,9 +34,7 @@ object BookApp extends App {
     bookRoute.route
   }
 
-  val host = config.getString("application.host")
-  val port = config.getInt("application.port")
-  Http().bindAndHandle(routes, host, port)
+  Http().bindAndHandle(routes, appConfig.application.host, appConfig.application.port)
 
   log.info("{} ActorSystem started", actorSystemName)
 

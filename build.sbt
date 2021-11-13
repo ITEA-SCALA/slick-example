@@ -9,20 +9,24 @@ val postgresVer       = "42.2.5"
 val json4sVer         = "3.6.4"
 val akkaHttpJson4sVer = "1.25.2"
 val macwireVer        = "2.4.1"
+val pureConfigVer     = "0.9.0"
+//val akkaQuartzVer     = "1.6.1-akka-2.5.x"
 val logbackClassicVer = "1.2.3"
 val scalaTestVer      = "3.0.8-RC4"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.akka"        %% "akka-actor"       % akkaVer,
-  "com.typesafe.akka"        %% "akka-http"        % akkaHttpVer,
-  "com.typesafe.slick"       %% "slick"            % slickVer,
-  "com.typesafe.slick"       %% "slick-hikaricp"   % slickVer,
-  "org.postgresql"           %  "postgresql"       % postgresVer,
-  "org.json4s"               %% "json4s-native"    % json4sVer,
-  "org.json4s"               %% "json4s-jackson"   % json4sVer,
-  "de.heikoseeberger"        %% "akka-http-json4s" % akkaHttpJson4sVer,
-  "com.softwaremill.macwire" %% "macros"           % macwireVer         % "provided",
-  "ch.qos.logback"           %  "logback-classic"  % logbackClassicVer,
-  "org.scalatest"            %% "scalatest"        % scalaTestVer % Test
+  "com.typesafe.akka"        %% "akka-actor"            % akkaVer,
+  "com.typesafe.akka"        %% "akka-http"             % akkaHttpVer,
+  "com.typesafe.slick"       %% "slick"                 % slickVer,
+  "com.typesafe.slick"       %% "slick-hikaricp"        % slickVer,
+  "org.postgresql"           %  "postgresql"            % postgresVer,
+  "org.json4s"               %% "json4s-native"         % json4sVer,
+  "org.json4s"               %% "json4s-jackson"        % json4sVer,
+  "de.heikoseeberger"        %% "akka-http-json4s"      % akkaHttpJson4sVer,
+  "com.softwaremill.macwire" %% "macros"                % macwireVer         % "provided",
+//  "com.enragedginger"        %% "akka-quartz-scheduler" % akkaQuartzVer,
+  "com.github.pureconfig"    %% "pureconfig"            % pureConfigVer,
+  "ch.qos.logback"           %  "logback-classic"       % logbackClassicVer,
+  "org.scalatest"            %% "scalatest"             % scalaTestVer % Test
 )
 
