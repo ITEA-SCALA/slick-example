@@ -1,5 +1,5 @@
 import kz.example.domain.Book
-import kz.example.repository.{BooksRepositoryImpl, BooksRepository}
+import kz.example.repository.{BookRepositoryImpl, BookRepository}
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Seconds, Span}
@@ -12,7 +12,7 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
   implicit override val patienceConfig = PatienceConfig(timeout = Span(5, Seconds))
 
   implicit var db: Database = _
-  var booksRepository: BooksRepository = _
+  var booksRepository: BookRepository = _
 
   val bookId: Int = 101
   val bookForInsert = Book(bookId, "Harry Potter and the Prisoner of Azkaban", "J. K. Rowling")
@@ -23,7 +23,7 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
 
   before {
     db = Database.forConfig("database.postgre")
-    booksRepository = new BooksRepositoryImpl()
+    booksRepository = new BookRepositoryImpl()
   }
 
   test("Creating the Schema works") {

@@ -4,7 +4,7 @@ import akka.http.scaladsl.model.StatusCodes
 import kz.example.actor.RequestActor
 import kz.example.messages.error.ErrorMessages
 import kz.example.domain.Book
-import kz.example.repository.BooksRepository
+import kz.example.repository.BookRepository
 
 import scala.util.{Failure, Success}
 
@@ -14,7 +14,7 @@ trait BookGetter {
 
   import kz.example.actor.book.BookManager.GetBook
 
-  def booksRepository: BooksRepository
+  def booksRepository: BookRepository
 
   def getBook(request: GetBook): Unit = {
     booksRepository.getBook(request.bookId).onComplete {

@@ -1,13 +1,14 @@
 package kz.example.repository
 
 import kz.example.domain.Book
-import kz.example.repository.table.BooksTable
 import slick.jdbc.PostgresProfile.api._
+import slick.lifted.ProvenShape
 import scala.concurrent.Future
 
-class BooksRepositoryImpl()
-  extends BooksRepository
-    with BooksTable {
+
+class BookRepositoryImpl()
+  extends BookRepository
+    with BookTable {
 
   override def add(book: Book): Future[Int] = {
     db.run(
@@ -40,4 +41,26 @@ class BooksRepositoryImpl()
       books.schema.createIfNotExists
     )
   }
+}
+
+trait BookRepository {
+  def add(book: Book): Future[Int]
+  def update(book: Book): Future[Int]
+  def deleteBook(bookId: Int): Future[Int]
+  def getBook(bookId: Int): Future[Seq[Book]]
+
+  def prepareRepository(): Future[Unit]
+}
+
+trait BookTable {
+
+  class Books(tag: Tag) extends Table[Book](tag, "BOOKS") { // class Books(tag: Tag) extends Table[Book](tag, Some("public"), "BOOKS") {
+    def id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+    def name: Rep[String] = column[String]("name")
+    def author: Rep[String] = column[String]("author")
+
+    def * : ProvenShape[Book] = (id, name, author) <> (Book.tupled, Book.unapply)
+  }
+
+  val books = TableQuery[Books]
 }

@@ -5,14 +5,14 @@ import akka.http.scaladsl.server.{RequestContext, RouteResult}
 import kz.example.actor.RequestActor
 import kz.example.actor.book.manager.{BookAdder, BookGetter, BookRemover, BookUpdater}
 import kz.example.domain.Book
-import kz.example.repository.BooksRepository
+import kz.example.repository.BookRepository
 
 import scala.concurrent.Promise
 
 
 object BookManager {
 
-  def props(repository: BooksRepository,
+  def props(repository: BookRepository,
             requestContext: RequestContext,
             promise: Promise[RouteResult]): Props =
     Props(new BookManager(repository, requestContext, promise))
@@ -27,7 +27,7 @@ object BookManager {
 }
 
 
-class BookManager(val booksRepository: BooksRepository, // это как Get/Set-ер
+class BookManager(val booksRepository: BookRepository, // это как Get/Set-ер
                   val requestContext: RequestContext,
                   val promise: Promise[RouteResult])
   extends RequestActor

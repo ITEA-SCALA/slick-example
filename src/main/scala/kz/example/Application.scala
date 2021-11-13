@@ -6,8 +6,8 @@ import akka.http.scaladsl.server.Directives.pathPrefix
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
-import kz.example.repository.{BooksRepository, BooksRepositoryImpl}
-import kz.example.routers.BookRoute2
+import kz.example.repository.{BookRepository, BookRepositoryImpl}
+import kz.example.routers.BookRoute
 //import kz.example.routers.Routes
 import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
@@ -43,29 +43,17 @@ object Application extends App {
 
   val log = LoggerFactory.getLogger(Application.getClass)
 
-//  val booksRepository: BooksRepository = new BooksRepositoryImpl()
-//
-//  booksRepository.prepareRepository().onComplete {
-//    case Success(_) => log.info("Books repository was successfully prepared")
-//
-//    case Failure(exception) =>
-//      log.error("Failed to prepare books repository with exception = {}", exception.toString)
-//      throw exception
-//  }
-//
-//  val restRoutes = new Routes(booksRepository)
 
+  val bookRepository = wire[BookRepositoryImpl]
+  val bookRoute = wire[BookRoute]
 
-  val bookRepository = wire[BooksRepositoryImpl]
-  val bookRoute = wire[BookRoute2]
-
-  val apiRoute: Route = pathPrefix("api") {
+  val routes: Route = pathPrefix("api") {
     bookRoute.route
   }
 
   val host = config.getString("application.host")
   val port = config.getInt("application.port")
-  Http().bindAndHandle(apiRoute, host, port)
+  Http().bindAndHandle(routes, host, port)
 
   log.info("{} ActorSystem started", actorSystemName)
 

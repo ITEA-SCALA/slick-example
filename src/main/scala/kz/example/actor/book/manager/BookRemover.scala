@@ -4,7 +4,7 @@ import akka.http.scaladsl.model.StatusCodes
 import kz.example.actor.RequestActor
 import kz.example.messages.error.ErrorMessages
 import kz.example.messages.success.SuccessMessages
-import kz.example.repository.BooksRepository
+import kz.example.repository.BookRepository
 
 import scala.util.{Failure, Success}
 
@@ -14,7 +14,7 @@ trait BookRemover {
 
   import kz.example.actor.book.BookManager.DeleteBook
 
-  def booksRepository: BooksRepository
+  def booksRepository: BookRepository
 
   def deleteBook(request: DeleteBook): Unit = {
     booksRepository.deleteBook(request.bookId).onComplete {

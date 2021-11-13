@@ -3,7 +3,7 @@ package kz.example.actor.book.manager
 import akka.http.scaladsl.model.StatusCodes
 import kz.example.actor.RequestActor
 import kz.example.messages.error.ErrorMessages
-import kz.example.repository.BooksRepository
+import kz.example.repository.BookRepository
 
 import scala.util.{Failure, Success}
 
@@ -13,7 +13,7 @@ trait BookAdder {
 
   import kz.example.actor.book.BookManager.AddBook
 
-  def booksRepository: BooksRepository
+  def booksRepository: BookRepository
 
   def addBook(request: AddBook): Unit = {
     booksRepository.add(request.book).onComplete {
