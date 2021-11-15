@@ -4,7 +4,6 @@ import com.example.config.PostgreDB
 import com.example.data.{Book, RequestBook}
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
-
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -22,28 +21,6 @@ class BookRepositoryPostgre
     PostgreDB.run {
       entity.result
     }
-  }
-
-  /*
-   * author=author_19  name=name_19
-   * author=author_19  name=
-   * author=  name=
-   */
-  def queryAnd(author: String, name: String): Query[BookTable, Book, Seq] = (author, name) match {
-    case (a, n) if a.nonEmpty && n.nonEmpty => entity.filter(_.author === a).filter(_.name === n)
-    case (a, _) if a.nonEmpty => entity.filter(_.author === a)
-    case (_, n) if n.nonEmpty => entity.filter(_.name === n)
-    case _ => entity.map(book => book)
-  }
-
-  /*
-   * name=name_19  author=test update author
-   * name=  author=test update author
-   * author=  name=
-   */
-  def queryOr(author: String, name: String): Query[BookTable, Book, Seq] = {
-    entity.filter(_.author === author)
-      .union(entity.filter(_.name === name))
   }
 
   override def filter(author: String, name: String) = {
@@ -96,6 +73,28 @@ abstract class BookEntity[E <: BookTable](val entity: TableQuery[E])
       book <- entity if book.id === id
     } yield book
     PostgreDB.run(query.result)
+  }
+
+  /*
+   * author=author_19  name=name_19
+   * author=author_19  name=
+   * author=  name=
+   */
+  def queryAnd(author: String, name: String): Query[E, Book, Seq] = (author, name) match {
+    case (a, n) if a.nonEmpty && n.nonEmpty => entity.filter(_.author === a).filter(_.name === n)
+    case (a, _) if a.nonEmpty => entity.filter(_.author === a)
+    case (_, n) if n.nonEmpty => entity.filter(_.name === n)
+    case _ => entity.map(book => book)
+  }
+
+  /*
+   * name=name_19  author=test update author
+   * name=  author=test update author
+   * author=  name=
+   */
+  def queryOr(author: String, name: String): Query[E, Book, Seq] = {
+    entity.filter(_.author === author)
+      .union(entity.filter(_.name === name))
   }
 
   def exists(id: Int): Future[Boolean] = {
