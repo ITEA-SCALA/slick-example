@@ -1,9 +1,9 @@
-package kz.example
+package com.example
 
 import java.time.{LocalDateTime, ZonedDateTime}
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-import kz.example.Printer.Greeting
-import kz.example.config.ApplicationConfig
+import Printer.Greeting
+import com.example.config.ApplicationConfig
 import com.typesafe.akka.extension.quartz.QuartzSchedulerExtension
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -25,7 +25,7 @@ class Printer extends Actor with ActorLogging {
   }
 }
 
-object SchedulerExampleApp extends App {
+object SchedulerApp extends App {
 
   val config: Config = ConfigFactory.load()
   val appConfig: ApplicationConfig = loadConfigOrThrow[ApplicationConfig](config)

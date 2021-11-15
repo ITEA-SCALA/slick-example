@@ -1,5 +1,5 @@
-import kz.example.domain.Book
-import kz.example.repository.{BookRepositoryImpl, BookRepository}
+import com.example.data.Book
+import com.example.repository.{BookRepositoryPostgre, BookRepository}
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Seconds, Span}
@@ -23,7 +23,7 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
 
   before {
     db = Database.forConfig("database.postgre")
-    booksRepository = new BookRepositoryImpl()
+    booksRepository = new BookRepositoryPostgre()
   }
 
   test("Creating the Schema works") {

@@ -1,20 +1,16 @@
-package kz.example
+package com.example
 
 import akka.actor.{Actor, ActorSystem, Props}
-import akka.http.scaladsl.settings.ServerSettings
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives.pathPrefix
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import kz.example.repository.BookRepositoryImpl
-import kz.example.routers.BookRoute
+import com.example.repository.BookRepositoryPostgre
+import com.example.routes.BookRoute
 import org.slf4j.LoggerFactory
-
 import scala.concurrent.ExecutionContext
 import com.softwaremill.macwire.wire
-import kz.example.config.{actorSystemName, appConfig}
-import kz.example.config.actorSystemName
-
+import com.example.config.{actorSystemName, appConfig}
 import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.{Duration, DurationInt, FiniteDuration}
@@ -22,9 +18,9 @@ import scala.concurrent.duration.{Duration, DurationInt, FiniteDuration}
 
 object BookApp extends App {
 
-  implicit val system: ActorSystem = ActorSystem(actorSystemName)
+  implicit val system: ActorSystem             = ActorSystem(actorSystemName)
   implicit val materializer: ActorMaterializer = ActorMaterializer()
-  implicit val ec: ExecutionContext = system.dispatcher
+  implicit val ec: ExecutionContext            = system.dispatcher
 
   val log = LoggerFactory.getLogger(BookApp.getClass)
 
@@ -53,22 +49,20 @@ object BookApp extends App {
 //      println(s"[${LocalDateTime.now}] [AkkaSchedulerExample] Executing something ...")
 //    }
 
-  val bookRepository = wire[BookRepositoryImpl]
+  val bookRepository = wire[BookRepositoryPostgre]
   val bookRoute = wire[BookRoute]
 
-//  val routes: Route = pathPrefix("api") {
-  val routes: Route = {
+  val routes: Route = pathPrefix("api") {
     bookRoute.route
   }
 
-  Http().bindAndHandle(routes, appConfig.application.host, appConfig.application.port)
-//  Http().newServerAt("0.0.0.0", 8082)
+  Http().bindAndHandle(
+    routes, appConfig.application.host, appConfig.application.port)
 
 
-  log.info("{} ActorSystem started", actorSystemName)
+//  log.info("{} ActorSystem started", actorSystemName)
 
   system.registerOnTermination {
     log.info("Terminating {} ActorSystem", actorSystemName)
   }
-
 }
