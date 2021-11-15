@@ -20,11 +20,18 @@ class BookRoute(repository: BookRepository) {
   /*
    * http://localhost:8082/api/books/30
    */
+//  def find: Route = path(IntNumber) { id =>
+//    get {
+//      onSuccess(repository.find2(id)) { res =>
+//        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res.toJson.prettyPrint))
+////        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res(0).toJson.prettyPrint))
+//      }
+//    }
+//  }
   def find: Route = path(IntNumber) { id =>
     get {
       onSuccess(repository.find(id)) { res =>
-        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res.toJson.prettyPrint))
-//        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res(0).toJson.prettyPrint))
+        complete(res)
       }
     }
   }

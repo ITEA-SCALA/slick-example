@@ -12,7 +12,19 @@ class BookRepositoryPostgre
   extends BookEntity(TableQuery[BookTable])
     with BookRepository {
 
+//  override def find(id: Int) = {
+//    val query = for {
+//      book <- entity if book.id === id
+//    } yield book
+//    PostgreDB.run(query.result)
+//  }
   override def find(id: Int) = {
+    getBook(id).flatMap {
+      res => Future(res.headOption)
+    }
+  }
+
+  private def getBook(id: Int): Future[Seq[Book]] = {
     val query = for {
       book <- entity if book.id === id
     } yield book
