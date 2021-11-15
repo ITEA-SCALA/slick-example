@@ -34,7 +34,8 @@ class BookRepositoryPostgre
 
   override def remove(id: Int) = {
     PostgreDB.run {
-      entity.filter(_.id === id).delete
+      entity.filter(_.id === id)
+        .delete
     }
   }
 
@@ -43,29 +44,29 @@ class BookRepositoryPostgre
       entity.schema.createIfNotExists
     }
   }
+}
 
-  private def getBookById(id: Int): Future[Seq[Book]] = {
+abstract class BookEntity[E <: BookTable](val entity: TableQuery[E]) {
+  def getBookById(id: Int): Future[Seq[Book]] = {
     val query = for {
       book <- entity if book.id === id
     } yield book
     PostgreDB.run(query.result)
   }
 
-  private def exists(id: Int): Future[Boolean] = {
+  def exists(id: Int): Future[Boolean] = {
     val query = for {
       book <- entity if book.id === id
     } yield book
     PostgreDB.run(query.exists.result)
   }
 
-  private def save(book: Book): Future[Int] = {
+  def save(book: Book): Future[Int] = {
     PostgreDB.run {
       entity += book  // entities.insertOrUpdate(book)
     }
   }
 }
-
-abstract class BookEntity[E <: BookTable](val entity: TableQuery[E])
 
 class BookTable(tag: Tag) extends Table[Book](tag, "BOOKS") { // class Books(tag: Tag) extends Table[Book](tag, Some("public"), "BOOKS") {
   def id: Rep[Int] = column[Int]("id", O.PrimaryKey)

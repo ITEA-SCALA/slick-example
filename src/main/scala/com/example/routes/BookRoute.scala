@@ -19,20 +19,17 @@ class BookRoute(repository: BookRepository) {
 
   /*
    * http://localhost:8082/api/books/30
+   * ***
+   * {
+   *   "author": "test update author",
+   *   "id": 32,
+   *   "name": "test update name"
+   * }
    */
-//  def find: Route = path(IntNumber) { id =>
-//    get {
-//      onSuccess(repository.find2(id)) { res =>
-//        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res.toJson.prettyPrint))
-////        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res(0).toJson.prettyPrint))
-//      }
-//    }
-//  }
   def find: Route = path(IntNumber) { id =>
     get {
-      onSuccess(repository.find(id)) { res =>
-        complete(res)
-      }
+      onSuccess(repository.find(id)) ( res =>
+        complete( res ))
     }
   }
 
@@ -52,9 +49,8 @@ class BookRoute(repository: BookRepository) {
   def insert: Route = pathEndOrSingleSlash {
     entity(as[Book]) { book =>
       post {
-        onSuccess(repository.insert(book)) { res =>
-          complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(res).toJson.prettyPrint))
-        }
+        onSuccess(repository.insert(book)) ( res =>
+          complete( OpSuccess(res) ))
       }
     }
   }
@@ -73,9 +69,8 @@ class BookRoute(repository: BookRepository) {
   def update: Route = pathEndOrSingleSlash {
     entity(as[Book]) { book =>
       put {
-        onSuccess(repository.update(book)) { res =>
-          complete(s"$res")
-        }
+        onSuccess(repository.update(book)) ( res =>
+          complete( OpSuccess(res) ))
       }
     }
   }
@@ -90,13 +85,8 @@ class BookRoute(repository: BookRepository) {
  */
   def remove: Route = path(IntNumber) { id =>
     delete {
-//      onSuccess(repository.remove(id)) {
-//        case 1 => complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(1).toJson.prettyPrint))
-//        case _ => complete(StatusCodes.BadRequest, HttpEntity(ContentTypes.`application/json`, OpFailure(s"There was an internal server error").toJson.prettyPrint))
-//      }
-      onSuccess(repository.remove(id)) { res =>
-        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(res).toJson.prettyPrint))
-      }
+      onSuccess(repository.remove(id)) ( res =>
+        complete( OpSuccess(res) ))
     }
   }
 }
