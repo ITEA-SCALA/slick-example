@@ -56,7 +56,7 @@ class BookRoute(repository: BookRepository) {
     parameters('author.as[String], 'name.as[String]) { (author, name) =>
       get {
         onSuccess(repository.filter(author, name)) ( res =>
-        complete( res ))
+          complete( res ))
       }
     }
   }
