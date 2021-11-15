@@ -3,7 +3,7 @@ package com.example.routes
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.example.data.{Book, OpFailure, OpSuccess}
+import com.example.data.{Book, NewBook, OpFailure, OpSuccess}
 import com.example.repository.BookRepository
 import com.example.data.JsonSupport._
 import spray.json._
@@ -57,9 +57,9 @@ class BookRoute(repository: BookRepository) {
   }
 
   def insert2: Route = path("insert") {
-    entity(as[Book]) { book =>
+    entity(as[NewBook]) { newBook =>
       post {
-        onSuccess(repository.insert2(book)) ( res =>
+        onSuccess(repository.insert2(newBook)) ( res =>
           complete( res ))
       }
     }

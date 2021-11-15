@@ -1,9 +1,10 @@
 package com.example.repository
 
 import com.example.config.PostgreDB
-import com.example.data.Book
+import com.example.data.{Book, NewBook}
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -25,7 +26,8 @@ class BookRepositoryPostgre
   }
 
 
-  def insert2(book: Book) = {
+  def insert2(newBook: NewBook) = {
+    val book = Book(newBook.name, newBook.author)
     val future: Future[Int] = PostgreDB.run(entity returning entity.map(_.id) += book)
     future.flatMap(id => {
         val newBook: Book = book.copy(id = id)
