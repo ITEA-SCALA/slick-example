@@ -12,7 +12,6 @@ class BookRepositoryPostgre
   extends BookEntity(TableQuery[BookTable])
     with BookRepository {
 
-
   override def find(id: Int) = {
     val query = for {
       book <- entity if book.id === id
