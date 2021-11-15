@@ -12,7 +12,7 @@ import spray.json._
 class BookRoute(repository: BookRepository) {
   def route: Route = pathPrefix("books") {
     find ~
-    insert ~
+//    insert ~
     create ~
     update ~
     remove
@@ -47,6 +47,7 @@ class BookRoute(repository: BookRepository) {
  *    "record": 1
  * }
  */
+  @Deprecated
   def insert: Route = pathEndOrSingleSlash {
     entity(as[Book]) { book =>
       post {
@@ -56,7 +57,21 @@ class BookRoute(repository: BookRepository) {
     }
   }
 
-  def create: Route = path("create") {
+/*
+ * POST
+ * http://localhost:8082/api/books
+ * {
+ *   "name": "test name",
+ *   "author": "test author"
+ * }
+ * ***
+ * {
+ *   "id": 16,
+ *   "author": "test author",
+ *   "name": "test name"
+ * }
+ */
+  def create: Route = pathEndOrSingleSlash {
     entity(as[RequestBook]) { req =>
       post {
         onSuccess(repository.create(req)) ( res =>
