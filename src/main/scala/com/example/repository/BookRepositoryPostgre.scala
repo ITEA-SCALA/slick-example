@@ -24,6 +24,13 @@ class BookRepositoryPostgre
     }
   }
 
+  def queryAnd(author: String, name: String): Query[BookTable, Book, Seq] = {
+    var query: Query[BookTable, Book, Seq] = entity.map(x => x)
+    if (author.nonEmpty) query = query.filter(_.author === author)
+    if (name.nonEmpty) query = query.filter(_.name === name)
+    query
+  }
+
   override def filter(author: String, name: String) = {
 //    PostgreDB.run {
 //      entity
@@ -32,10 +39,10 @@ class BookRepositoryPostgre
 //        .result
 //    }
 
-    var queryAnd: Query[BookTable, Book, Seq] = entity.map(x => x)
-    if (author.nonEmpty) queryAnd = queryAnd.filter(_.author === author)
-    if (name.nonEmpty) queryAnd = queryAnd.filter(_.name === name)
-    PostgreDB.run(queryAnd.result)
+    PostgreDB.run{
+      queryAnd(author,name).result
+    }
+
 
     //    val query = for {
     //      bookAuthor <- entity if author.nonEmpty if bookAuthor.author === author
