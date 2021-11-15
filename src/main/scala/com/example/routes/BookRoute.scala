@@ -18,6 +18,7 @@ class BookRoute(repository: BookRepository) {
   }
 
   /*
+   * GET
    * http://localhost:8082/api/books/30
    * ***
    * {
@@ -33,6 +34,32 @@ class BookRoute(repository: BookRepository) {
     }
   }
 
+  /*
+   * GET
+   * http://localhost:8082/api/books
+   * ***
+   * {
+   *    "author": "test author",
+   *    "id": 5,
+   *    "name": "test name"
+   * },
+   * {
+   *   "author": "test author",
+   *   "id": 6,
+   *   "name": "test name"
+   * },
+   * {
+   *   "author": "test author",
+   *   "id": 7,
+   *   "name": "test name"
+   * },
+   * ...
+   * {
+   *   "author": "test update author",
+   *   "id": 20,
+   *   "name": "test update name"
+   * }
+   */
   def list: Route = pathEndOrSingleSlash {
     get {
       onSuccess(repository.list()) ( res =>
