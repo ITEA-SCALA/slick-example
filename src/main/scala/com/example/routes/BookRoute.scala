@@ -37,6 +37,7 @@ class BookRoute(repository: BookRepository) {
 
   /*
    * http://localhost:8082/api/books/filter?author=author_19r&name=name_19
+   * http://localhost:8082/api/books/filter?name=name_19&author=test update author
    * ***
    * [
    *   {
