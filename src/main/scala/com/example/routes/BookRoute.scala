@@ -11,8 +11,7 @@ import spray.json._
 
 class BookRoute(repository: BookRepository) {
   def route: Route = pathPrefix("books") {
-    exists1 ~
-    exists2 ~
+    exists ~
     find ~
     getBook ~
     save ~
@@ -23,30 +22,14 @@ class BookRoute(repository: BookRepository) {
 
   /*
    * GET
-   * http://localhost:8082/api/books/exists1/30
+   * http://localhost:8082/api/books/exists/30
    * ***
    * Vector(Book(30,test update name,test update author))
    */
-  def exists1: Route = pathPrefix("exists1") {
-    path(IntNumber) { bookId =>
-      get {
-        onSuccess(repository.exists1(bookId)) { res =>
-          complete(s"$res")
-        }
-      }
-    }
-  }
-
-  /*
-   * GET
-   * http://localhost:8082/api/books/exists2/30
-   * ***
-   * Vector(Book(30,test update name,test update author))
-   */
-  def exists2: Route = pathPrefix("exists2") {
+  def exists: Route = pathPrefix("exists") {
     path(IntNumber) { id =>
       get {
-        onSuccess(repository.exists2(id)) { res =>
+        onSuccess(repository.exists(id)) { res =>
           complete(s"$res")
         }
       }
@@ -60,7 +43,8 @@ class BookRoute(repository: BookRepository) {
     path(IntNumber) { id =>
       get {
         onSuccess(repository.find(id)) { res =>
-          complete(s"$res")
+          complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res.toJson.prettyPrint))
+//        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res(0).toJson.prettyPrint))
         }
       }
     }

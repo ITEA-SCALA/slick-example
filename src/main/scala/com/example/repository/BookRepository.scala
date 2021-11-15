@@ -5,8 +5,7 @@ import scala.concurrent.Future
 
 
 trait BookRepository {
-  def exists1(bookId: Int): Future[Boolean]
-  def exists2(id: Int): Future[Boolean]
+  def exists(id: Int): Future[Boolean]
   def find(id: Int): Future[Seq[Book]]
   def save(book: Book): Future[Int]
   def insert(book: Book): Future[Int]
