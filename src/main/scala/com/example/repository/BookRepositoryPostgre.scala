@@ -84,7 +84,7 @@ abstract class BookEntity[E <: BookTable](val entity: TableQuery[E])
     case (a, n) if a.nonEmpty && n.nonEmpty => entity.filter(_.author === a).filter(_.name === n)
     case (a, _) if a.nonEmpty => entity.filter(_.author === a)
     case (_, n) if n.nonEmpty => entity.filter(_.name === n)
-    case _ => entity.map(book => book)
+    case _ => entity
   }
 
   /*
@@ -94,7 +94,7 @@ abstract class BookEntity[E <: BookTable](val entity: TableQuery[E])
    */
   def queryOr(author: String, name: String): Query[E, Book, Seq] = {
     entity.filter(_.author === author)
-      .union(entity.filter(_.name === name))
+      .union( entity.filter(_.name === name) )
   }
 
   def exists(id: Int): Future[Boolean] = {
