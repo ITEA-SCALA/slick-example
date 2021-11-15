@@ -31,6 +31,12 @@ class BookRepositoryPostgre
     query
   }
 
+  def queryOr(author: String, name: String): Query[BookTable, Book, Seq] = {
+    val query1 = entity.filter(_.author === author)
+    val query2 = entity.filter(_.name === name)
+    query1.union(query2)
+  }
+
   override def filter(author: String, name: String) = {
 //    PostgreDB.run {
 //      entity
@@ -39,22 +45,10 @@ class BookRepositoryPostgre
 //        .result
 //    }
 
-//    PostgreDB.run{
-//      queryAnd(author,name).result
-//    }
-
-    val query1 = entity.filter(_.author === author)
-    val query2 = entity.filter(_.name === name)
-    val query = query1.union(query2)
-
     PostgreDB.run{
-      query.result
+//      queryAnd(author,name).result
+      queryOr(author,name).result
     }
-
-    //    val query = for {
-    //      bookAuthor <- entity if author.nonEmpty if bookAuthor.author === author
-    //      nameAuthor <- entity if name.nonEmpty if nameAuthor.name === name
-    //    } yield (bookAuthor, nameAuthor)
   }
 
   @Deprecated
