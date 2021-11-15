@@ -41,7 +41,7 @@ class BookRepositoryPostgre
   def create(req: RequestBook) = {
     val book = Book(req.name, req.author)
     saveAutoInc(req).flatMap( id =>
-        Future(book.copy(id = id)))
+        Future( book.copy(id = id)) )
   }
 
   override def update(book: Book) = {
