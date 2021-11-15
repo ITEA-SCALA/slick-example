@@ -24,6 +24,11 @@ class BookRepositoryPostgre
     }
   }
 
+  /*
+   * author=author_19  name=name_19
+   * author=author_19  name=
+   * author=  name=
+   */
   def queryAnd(author: String, name: String): Query[BookTable, Book, Seq] = (author, name) match {
     case (a, n) if a.nonEmpty && n.nonEmpty => entity.filter(_.author === a).filter(_.name === n)
     case (a, _) if a.nonEmpty => entity.filter(_.author === a)
@@ -31,16 +36,20 @@ class BookRepositoryPostgre
     case _ => entity.map(book => book)
   }
 
+  /*
+   * name=name_19  author=test update author
+   * name=  author=test update author
+   * author=  name=
+   */
   def queryOr(author: String, name: String): Query[BookTable, Book, Seq] = {
-    val query1 = entity.filter(_.author === author)
-    val query2 = entity.filter(_.name === name)
-    query1.union(query2)
+    entity.filter(_.author === author)
+      .union(entity.filter(_.name === name))
   }
 
   override def filter(author: String, name: String) = {
     PostgreDB.run{
-      queryAnd(author,name).result
-//      queryOr(author,name).result
+//      queryAnd(author,name).result
+      queryOr(author,name).result
     }
   }
 
