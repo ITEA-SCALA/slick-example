@@ -1,12 +1,10 @@
 package com.example.routes
 
-import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.example.data.{Book, RequestBook, OpFailure, OpSuccess}
 import com.example.repository.BookRepository
 import com.example.data.JsonSupport._
-import spray.json._
 
 
 class BookRoute(repository: BookRepository) {
