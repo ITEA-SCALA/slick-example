@@ -26,10 +26,10 @@ class BookRepositoryPostgre
 
   override def filter(author: String, name: String) = {
     PostgreDB.run {
-      entity.filter( book => {
-        book.author === author
-        book.name === name
-      }).result
+      entity
+        .filter( _.author === author)
+        .filter( _.name === name)
+        .result
     }
   }
 
