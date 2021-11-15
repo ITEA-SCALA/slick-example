@@ -10,6 +10,7 @@ import com.example.data.JsonSupport._
 class BookRoute(repository: BookRepository) {
   def route: Route = pathPrefix("books") {
     find ~
+    list ~
 //    insert ~
     create ~
     update ~
@@ -28,6 +29,13 @@ class BookRoute(repository: BookRepository) {
   def find: Route = path(IntNumber) { id =>
     get {
       onSuccess(repository.find(id)) ( res =>
+        complete( res ))
+    }
+  }
+
+  def list: Route = pathEndOrSingleSlash {
+    get {
+      onSuccess(repository.list()) ( res =>
         complete( res ))
     }
   }

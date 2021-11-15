@@ -18,6 +18,12 @@ class BookRepositoryPostgre
       Future(res.headOption))
   }
 
+  override def list(): Future[Seq[Book]] = {
+    PostgreDB.run {
+      entity.result
+    }
+  }
+
   @Deprecated
   override def insert(book: Book) = {
     exists(book.id).flatMap {
