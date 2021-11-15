@@ -39,10 +39,17 @@ class BookRepositoryPostgre
 //        .result
 //    }
 
-    PostgreDB.run{
-      queryAnd(author,name).result
-    }
+//    PostgreDB.run{
+//      queryAnd(author,name).result
+//    }
 
+    val query1 = entity.filter(_.author === author)
+    val query2 = entity.filter(_.name === name)
+    val query = query1.union(query2)
+
+    PostgreDB.run{
+      query.result
+    }
 
     //    val query = for {
     //      bookAuthor <- entity if author.nonEmpty if bookAuthor.author === author
