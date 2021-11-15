@@ -26,7 +26,7 @@ class BookRepositoryPostgre
     }
   }
 
-  override def update(book: Book): Future[Int] = {
+  override def update(book: Book) = {
     PostgreDB.run {
       entity.filter(_.id === book.id)
         .map(b => (b.name, b.author))
@@ -34,22 +34,22 @@ class BookRepositoryPostgre
     }
   }
 
-  override def remove(id: Int): Future[Int] = {
+  override def remove(id: Int) = {
     PostgreDB.run {
       entity.filter(_.id === id).delete
     }
   }
 
-  override def prepareRepository(): Future[Unit] = {
+  override def prepareRepository() = {
     PostgreDB.run {
       entity.schema.createIfNotExists
     }
   }
 
-  private def exists(id: Int) = {
+  private def exists(id: Int): Future[Boolean] = {
     val query = for {
       book <- entity if book.id === id
-    } yield true
+    } yield book
     PostgreDB.run(query.exists.result)
   }
 
