@@ -10,19 +10,29 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class BookRepositoryPostgre
   extends BookEntity(TableQuery[BookTable])
-    with BookRepository {
-
+    with BookRepository
+{
   override def find(id: Int) = {
     getBookById(id).flatMap ( res =>
       Future(res.headOption))
   }
 
-  def insert(book: Book) = {
+  override def insert(book: Book) = {
     exists(book.id).flatMap {
       case res if res => Future(0)
       case _ => save(book)
     }
   }
+
+
+  def insert2(book: Book) = {
+    val future: Future[Int] = PostgreDB.run(entity returning entity.map(_.id) += book)
+    future.flatMap(id => {
+        val newBook: Book = book.copy(id = id)
+        Future(newBook)
+      })
+  }
+
 
   override def update(book: Book) = {
     PostgreDB.run {
@@ -46,16 +56,17 @@ class BookRepositoryPostgre
   }
 }
 
-abstract class BookEntity[E <: BookTable](val entity: TableQuery[E]) {
+abstract class BookEntity[E <: BookTable](val entity: TableQuery[E])
+{
   def getBookById(id: Int): Future[Seq[Book]] = {
-    val query = for {
+    val query: Query[E, Book, Seq] = for {
       book <- entity if book.id === id
     } yield book
     PostgreDB.run(query.result)
   }
 
   def exists(id: Int): Future[Boolean] = {
-    val query = for {
+    val query: Query[E, Book, Seq] = for {
       book <- entity if book.id === id
     } yield book
     PostgreDB.run(query.exists.result)
@@ -69,9 +80,10 @@ abstract class BookEntity[E <: BookTable](val entity: TableQuery[E]) {
 }
 
 class BookTable(tag: Tag) extends Table[Book](tag, "BOOKS") { // class Books(tag: Tag) extends Table[Book](tag, Some("public"), "BOOKS") {
-  def id: Rep[Int] = column[Int]("id", O.PrimaryKey)
+  def id: Rep[Int] = column[Int]("id", O.PrimaryKey, O.AutoInc)
   def name: Rep[String] = column[String]("name")
   def author: Rep[String] = column[String]("author")
 
-  def * : ProvenShape[Book] = (id, name, author) <> (Book.tupled, Book.unapply)
+//  def * : ProvenShape[Book] = (id, name, author) <> (Book.tupled, Book.unapply)
+  def * = (name, author, id) <> (Book.tupled, Book.unapply)
 }

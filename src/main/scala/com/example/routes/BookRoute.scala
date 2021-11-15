@@ -13,6 +13,7 @@ class BookRoute(repository: BookRepository) {
   def route: Route = pathPrefix("books") {
     find ~
     insert ~
+    insert2 ~
     update ~
     remove
   }
@@ -51,6 +52,15 @@ class BookRoute(repository: BookRepository) {
       post {
         onSuccess(repository.insert(book)) ( res =>
           complete( OpSuccess(res) ))
+      }
+    }
+  }
+
+  def insert2: Route = path("insert") {
+    entity(as[Book]) { book =>
+      post {
+        onSuccess(repository.insert2(book)) ( res =>
+          complete( res ))
       }
     }
   }
