@@ -25,12 +25,22 @@ class BookRepositoryPostgre
   }
 
   override def filter(author: String, name: String) = {
-    PostgreDB.run {
-      entity
-        .filter(_.author === author)
-        .filter(_.name === name)
-        .result
-    }
+//    PostgreDB.run {
+//      entity
+//        .filter(_.author === author)
+//        .filter(_.name === name)
+//        .result
+//    }
+
+    var queryAnd: Query[BookTable, Book, Seq] = entity.map(x => x)
+    if (author.nonEmpty) queryAnd = queryAnd.filter(_.author === author)
+    if (name.nonEmpty) queryAnd = queryAnd.filter(_.name === name)
+    PostgreDB.run(queryAnd.result)
+
+    //    val query = for {
+    //      bookAuthor <- entity if author.nonEmpty if bookAuthor.author === author
+    //      nameAuthor <- entity if name.nonEmpty if nameAuthor.name === name
+    //    } yield (bookAuthor, nameAuthor)
   }
 
   @Deprecated
