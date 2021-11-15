@@ -12,22 +12,22 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
   implicit override val patienceConfig = PatienceConfig(timeout = Span(5, Seconds))
 
   implicit var db: Database = _
-  var booksRepository: BookRepository = _
+  var repository: BookRepository = _
 
-  val bookId: Int = 101
-  val bookForInsert = Book(bookId, "Harry Potter and the Prisoner of Azkaban", "J. K. Rowling")
-  val bookForUpdate = Book(bookId, "Harry Potter and the Goblet of Fire", "J. K. Rowling")
+  val id: Int = 101
+  val bookForInsert = Book(id, "Harry Potter and the Prisoner of Azkaban", "J. K. Rowling")
+  val bookForUpdate = Book(id, "Harry Potter and the Goblet of Fire", "J. K. Rowling")
 
-  def insertBook: Int = booksRepository.save(bookForInsert).futureValue
-  def updateBook: Int = booksRepository.update(bookForUpdate).futureValue
+  def insertBook: Int = repository.save(bookForInsert).futureValue
+  def updateBook: Int = repository.update(bookForUpdate).futureValue
 
   before {
-    db = Database.forConfig("database.postgre")
-    booksRepository = new BookRepositoryPostgre()
+    db = Database.forConfig("db.localhost.postgre")
+    repository = new BookRepositoryPostgre()
   }
 
   test("Creating the Schema works") {
-    booksRepository.prepareRepository()
+    repository.prepareRepository()
 
     val tables = db.run(MTable.getTables).futureValue
     assert(tables.count(_.name.name.equalsIgnoreCase("books")) == 1)
@@ -39,7 +39,7 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
   }
 
   test("Selecting the Book works after insert operation") {
-    val result = booksRepository.getBook(bookId).futureValue
+    val result = repository.find(id).futureValue
     assert(result.head == bookForInsert)
   }
 
@@ -49,17 +49,17 @@ class MyPostgresTest extends FunSuite with BeforeAndAfter with ScalaFutures {
   }
 
   test("Selecting the Book works after update operation") {
-    val result = booksRepository.getBook(bookId).futureValue
+    val result = repository.find(id).futureValue
     assert(result.head == bookForUpdate)
   }
 
   test("Deleting the Book works") {
-    val result = booksRepository.deleteBook(bookId).futureValue
+    val result = repository.remove(id).futureValue
     assert(result == 1)
   }
 
   test("Selecting the Book works after delete operation") {
-    val result = booksRepository.getBook(bookId).futureValue
+    val result = repository.find(id).futureValue
     assert(result.isEmpty)
   }
 

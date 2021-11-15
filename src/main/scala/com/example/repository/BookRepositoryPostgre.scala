@@ -19,10 +19,11 @@ class BookRepositoryPostgre
     PostgreDB.run(query.exists.result)
   }
 
-  override def save(book: Book): Future[Int] = {
-    PostgreDB.run {
-      entity += book  // entities.insertOrUpdate(book)
-    }
+  override def find(id: Int) = {
+    val query = for {
+      book <- entity if book.id === id
+    } yield book
+    PostgreDB.run(query.result)
   }
 
   def insert(book: Book) = {
@@ -32,11 +33,10 @@ class BookRepositoryPostgre
     }
   }
 
-  override def find(id: Int) = {
-    val query = for {
-      book <- entity if book.id === id
-    } yield book
-    PostgreDB.run(query.result)
+  override def save(book: Book): Future[Int] = {
+    PostgreDB.run {
+      entity += book  // entities.insertOrUpdate(book)
+    }
   }
 
   override def update(book: Book): Future[Int] = {
@@ -47,15 +47,9 @@ class BookRepositoryPostgre
     }
   }
 
-  override def deleteBook(bookId: Int): Future[Int] = {
+  override def remove(id: Int): Future[Int] = {
     PostgreDB.run {
-      entity.filter(_.id === bookId).delete
-    }
-  }
-
-  override def getBook(bookId: Int): Future[Seq[Book]] = {
-    PostgreDB.run {
-      entity.filter(_.id === bookId).result
+      entity.filter(_.id === id).delete
     }
   }
 
