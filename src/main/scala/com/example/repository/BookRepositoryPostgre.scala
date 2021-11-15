@@ -12,12 +12,6 @@ class BookRepositoryPostgre
   extends BookEntity(TableQuery[BookTable])
     with BookRepository {
 
-  override def exists(id: Int) = {
-    val query = for {
-      book <- entity if book.id === id
-    } yield true
-    PostgreDB.run(query.exists.result)
-  }
 
   override def find(id: Int) = {
     val query = for {
@@ -30,12 +24,6 @@ class BookRepositoryPostgre
     exists(book.id).flatMap {
       case res if res => Future(0)
       case _ => save(book)
-    }
-  }
-
-  override def save(book: Book): Future[Int] = {
-    PostgreDB.run {
-      entity += book  // entities.insertOrUpdate(book)
     }
   }
 
@@ -56,6 +44,19 @@ class BookRepositoryPostgre
   override def prepareRepository(): Future[Unit] = {
     PostgreDB.run {
       entity.schema.createIfNotExists
+    }
+  }
+
+  private def exists(id: Int) = {
+    val query = for {
+      book <- entity if book.id === id
+    } yield true
+    PostgreDB.run(query.exists.result)
+  }
+
+  private def save(book: Book): Future[Int] = {
+    PostgreDB.run {
+      entity += book  // entities.insertOrUpdate(book)
     }
   }
 }

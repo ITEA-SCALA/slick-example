@@ -11,61 +11,20 @@ import spray.json._
 
 class BookRoute(repository: BookRepository) {
   def route: Route = pathPrefix("books") {
-    exists ~
     find ~
     insert ~
-    save ~
     update ~
     remove
   }
 
   /*
-   * GET
-   * http://localhost:8082/api/books/exists/30
-   * ***
-   * Vector(Book(30,test update name,test update author))
+   * http://localhost:8082/api/books/30
    */
-  def exists: Route = pathPrefix("exists") {
-    path(IntNumber) { id =>
-      get {
-        onSuccess(repository.exists(id)) { res =>
-          complete(s"$res")
-        }
-      }
-    }
-  }
-
-  /*
-   * http://localhost:8082/api/books/find/30
-   */
-  def find: Route = pathPrefix("find") {
-    path(IntNumber) { id =>
-      get {
-        onSuccess(repository.find(id)) { res =>
-          complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res.toJson.prettyPrint))
+  def find: Route = path(IntNumber) { id =>
+    get {
+      onSuccess(repository.find(id)) { res =>
+        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res.toJson.prettyPrint))
 //        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, res(0).toJson.prettyPrint))
-        }
-      }
-    }
-  }
-
-  /*
-   * POST
-   * http://localhost:8082/api/books/insert
-   * {
-   *   "id": 30,
-   *   "name": "test name",
-   *   "author": "test author"
-   * }
-   * ***
-   * "1"
-   */
-  def insert: Route = path("insert") {
-    entity(as[Book]) { book =>
-      post {
-        onSuccess(repository.insert(book)) { res =>
-          complete(s"$res")
-        }
       }
     }
   }
@@ -79,12 +38,14 @@ class BookRoute(repository: BookRepository) {
  *   "author": "test author"
  * }
  * ***
- * "1"
+ * {
+ *    "record": 1
+ * }
  */
-  def save: Route = pathEndOrSingleSlash {
+  def insert: Route = pathEndOrSingleSlash {
     entity(as[Book]) { book =>
       post {
-        onSuccess(repository.save(book)) { res =>
+        onSuccess(repository.insert(book)) { res =>
           complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(res).toJson.prettyPrint))
         }
       }
@@ -116,13 +77,18 @@ class BookRoute(repository: BookRepository) {
  * DELETE
  * http://localhost:8082/api/books/30
  * ***
- * "1"
+ * {
+ *    "record": 1
+ * }
  */
   def remove: Route = path(IntNumber) { id =>
     delete {
-      onSuccess(repository.remove(id)) {
-        case 1 => complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(1).toJson.prettyPrint))
-        case _ => complete(StatusCodes.BadRequest, HttpEntity(ContentTypes.`application/json`, OpFailure(s"There was an internal server error").toJson.prettyPrint))
+//      onSuccess(repository.remove(id)) {
+//        case 1 => complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(1).toJson.prettyPrint))
+//        case _ => complete(StatusCodes.BadRequest, HttpEntity(ContentTypes.`application/json`, OpFailure(s"There was an internal server error").toJson.prettyPrint))
+//      }
+      onSuccess(repository.remove(id)) { res =>
+        complete(StatusCodes.OK, HttpEntity(ContentTypes.`application/json`, OpSuccess(res).toJson.prettyPrint))
       }
     }
   }
