@@ -18,9 +18,18 @@ class BookRepositoryPostgre
       Future(res.headOption))
   }
 
-  override def list(): Future[Seq[Book]] = {
+  override def list() = {
     PostgreDB.run {
       entity.result
+    }
+  }
+
+  override def filter(author: String, name: String) = {
+    PostgreDB.run {
+      entity.filter( book => {
+        book.author === author
+        book.name === name
+      }).result
     }
   }
 

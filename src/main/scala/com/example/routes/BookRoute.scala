@@ -11,6 +11,7 @@ class BookRoute(repository: BookRepository) {
   def route: Route = pathPrefix("books") {
     find ~
     list ~
+    filter ~
 //    insert ~
     create ~
     update ~
@@ -31,6 +32,31 @@ class BookRoute(repository: BookRepository) {
     get {
       onSuccess(repository.find(id)) ( res =>
         complete( res ))
+    }
+  }
+
+  /*
+   * http://localhost:8082/api/books/filter?author=author_19r&name=name_19
+   * ***
+   * [
+   *   {
+   *     "author": "author_19",
+   *     "id": 5,
+   *     "name": "name_19"
+   *   },
+   *   {
+   *     "author": "author_19",
+   *     "id": 6,
+   *     "name": "name_19"
+   *   }
+   * ]
+   */
+  def filter: Route = path("filter") {
+    parameters('author.as[String], 'name.as[String]) { (author, name) =>
+      get {
+        onSuccess(repository.filter(author, name)) ( res =>
+        complete( res ))
+      }
     }
   }
 
