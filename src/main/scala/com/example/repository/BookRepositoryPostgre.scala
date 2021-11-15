@@ -1,7 +1,7 @@
 package com.example.repository
 
 import com.example.config.PostgreDB
-import com.example.data.{Book, NewBook}
+import com.example.data.{Book, RequestBook}
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.ProvenShape
 
@@ -18,6 +18,7 @@ class BookRepositoryPostgre
       Future(res.headOption))
   }
 
+  @Deprecated
   override def insert(book: Book) = {
     exists(book.id).flatMap {
       case res if res => Future(0)
@@ -25,16 +26,11 @@ class BookRepositoryPostgre
     }
   }
 
-
-  def insert2(newBook: NewBook) = {
-    val book = Book(newBook.name, newBook.author)
-    val future: Future[Int] = PostgreDB.run(entity returning entity.map(_.id) += book)
-    future.flatMap(id => {
-        val newBook: Book = book.copy(id = id)
-        Future(newBook)
-      })
+  def create(req: RequestBook) = {
+    val book = Book(req.name, req.author)
+    saveAutoInc(req).flatMap(id =>
+        Future(book.copy(id = id)))
   }
-
 
   override def update(book: Book) = {
     PostgreDB.run {
@@ -78,6 +74,10 @@ abstract class BookEntity[E <: BookTable](val entity: TableQuery[E])
     PostgreDB.run {
       entity += book  // entities.insertOrUpdate(book)
     }
+  }
+
+  def saveAutoInc(req: RequestBook): Future[Int] = {
+    PostgreDB.run(entity returning entity.map(_.id) += Book(req.name, req.author))
   }
 }
 

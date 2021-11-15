@@ -4,7 +4,8 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import spray.json.DefaultJsonProtocol
 
 
-case class NewBook(name: String, author: String)
+case class RequestBook(name: String, author: String)
+
 case class Book(name: String, author: String, id: Int = 0)
 
 /**
@@ -23,7 +24,7 @@ case class OpFailure(error : String)
  * Json formatters
  */
 object JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
-  implicit val newBookFormat = jsonFormat2(NewBook)
+  implicit val requestBookFormat = jsonFormat2(RequestBook)
   implicit val bookFormat = jsonFormat3(Book)
   implicit val opSuccessFormat = jsonFormat1(OpSuccess)
   implicit val opFailureFormat = jsonFormat1(OpFailure)
