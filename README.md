@@ -5,16 +5,33 @@
 
 Цель этого проекта - показать, как можно использовать библиотеку `slick` в качестве *Functional Relational Mapping для Scala*.
 
+
+---
+
+* `Jesús Martínez-B. H. * Slick 101`: https://docs.google.com/presentation/d/1pWi8B6cO_8JpxMBy7PVLMbJbRkeMqWH3LJh4lwxnRN8/htmlpresent
+* `Jan Christopher Vogt * Patterns for slick database applications`: https://www.slideshare.net/skillsmatter/patterns-for-slick-database-applications
+* `Rebecca Grenier * Scala Slick-2`: https://www.slideshare.net/ArtemVlasenko1/scala-slick2
+* `Scala Tutorial: Create CRUD with Slick and MySQL`: https://codequs.com/p/B1IogRLY
+* `Slick 3.2.0 manual - DATABASE I/O ACTIONS`: https://scala-slick.org/doc/3.2.0/dbio.html
+  ```scala
+    val q = for (c <- coffees) yield c.name
+    val a = q.result
+    val f: Future[Seq[String]] = db.run(a)
+    
+    f.onSuccess { case s => println(s"Result: $s") }
+  ```
+* **(** `Introduction to Slick`: https://www.baeldung.com/scala/slick-intro **)**
+* **(** `Scala Tutorial – map, flatMap, flatten and filter – Higher-order Methods`: https://freecontent.manning.com/using-option-in-scala-part-2-map-and-flatmap **)**
+* **(** `Scala Future return Type`: https://stackoverflow.com/questions/64585141/scala-future-return-type **)**
+  * https://coderoad.ru/23179097/Почему-Scala-Future-возвращает-None-используя-flatMap-и-для-понимания
+* **(** `How to read query parameters in akka-http`: https://stackoverflow.com/questions/39763652/how-to-read-query-parameters-in-akka-http **)**
+
 ## Features
 
 - Автоматически создает в базе данных таблицу с именем `BOOKS`
 - Выполняет CRUD-операции
 - REST-API построен на *Akka HTTP*
 - *HikaryCP* используется как пул соединений
-
-## Getting Started
-
-Эти инструкции позволят запустить экземпляр проекта на локальном компьютере в целях разработки и тестирования.
 
 ### Prerequisites
 
